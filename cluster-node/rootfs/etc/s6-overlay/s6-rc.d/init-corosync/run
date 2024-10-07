@@ -43,7 +43,7 @@ fi
 
 logging="${logging}}"
 
-node_list="node_list {"
+node_list="nodelist {"
 while IFS=' ' read -r node_def; do
   node_id=$(bashio::jq "${node_def}" ".id")
   node_name=$(bashio::jq "${node_def}" ".name")
