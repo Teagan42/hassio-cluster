@@ -3,6 +3,8 @@
 # Home Assistant Community Add-on: Cluster Node
 # Ensure Corosync configuration exists
 # ==============================================================================
+
+bashio::log.info "Building Corosync configuration...."
 transport=$(bashio::config 'transport' 'knet')
 
 totem="totem {\n"
