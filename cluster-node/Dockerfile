@@ -5,14 +5,14 @@ FROM ${BUILD_FROM}
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-COPY rootfs /
-
 # Install corosync and pacemaker
 RUN apt update && \
     apt install -y corosync pacemaker pcs
 
 # Disable any default systemd service files from corosync/pacemaker
 RUN rm -f /etc/init.d/corosync /etc/init.d/pacemaker
+
+COPY rootfs /
 
 # Build arguments
 ARG BUILD_ARCH=amd64
