@@ -8,7 +8,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 COPY rootfs /
 
 # Install corosync and pacemaker
-RUN apk add --no-cache corosync pacemaker pcs
+RUN apt update && \
+    apt install -y corosync pacemaker pcs
 
 # Disable any default systemd service files from corosync/pacemaker
 RUN rm -f /etc/init.d/corosync /etc/init.d/pacemaker
