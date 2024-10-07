@@ -34,6 +34,8 @@ totem="${totem}}"
 logging="logging {\n"
 logging="${logging}\tto_stderr: yes\n"
 logging="${logging}\tto_syslog: yes\n"
+logging="${logging}\tto_logfile: yes\n"
+logging="${logging}\tlogfile: /opt/cluster/config/corosync.log\n"
 
 if bashio::config.true 'debug'; then
   logging="${logging}\tdebug: yes\n"
