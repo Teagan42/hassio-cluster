@@ -1,0 +1,70 @@
+#!/usr/bin/env bashio
+# ==============================================================================
+# Home Assistant Community Add-on: Cluster Node
+# Ensure Corosync configuration exists
+# ==============================================================================
+transport=$(bashio::config 'transport' 'knet')
+
+totem="totem {\n"
+totem="${totem}\tversion: 2\n"
+totem="${totem}\tcluster_name: $(bashio::config 'cluster_name')\n"
+totem="${totem}\ttransport: ${transport}\n"
+if bashio::config.has_value 'sec_auth'; then
+  totem="${totem}\tsecauth: $(bashio::config 'sec_auth')\n"
+fi
+if bashio::config.has_value 'crypto_cipher' && bashio::config.has_value 'crypto_hash'; then
+  if bashio::config.has_value 'transport' && bashio::config.equals 'transport' 'knet'; then
+    bashio::log.yellow 'Options [crypto_cipher] and [crypto_hash] require the "knet" [transport], disabling cryptographic authentication.'
+  else
+    totem="${totem}\tcrypto_cipher: $(bashio::config 'crypto_cipher')\n"
+    totem="${totem}\tcrypto_hash: $(bashio::config 'crypto_hash')\n"
+  fi
+elif bashio::config.has_value 'crypto_cipher' || bashio::config.has_value 'crypto_hash'; then
+  bashio::log.yellow 'Options [crypto_cipher] and [crypto_hash] must both be set if either are set, disabling cryptographic authentication.'
+fi
+
+if bashio::config.has_value 'rrp_mode'; then
+  totem="${totem}\trrp_mode: $(bashio::config 'rrp_mode')\n"
+fi
+
+totem="${totem}}"
+
+echo -e "${totem}"
+
+logging="logging {\n"
+logging="${logging}\tto_stderr: yes\n"
+logging="${logging}\tto_syslog: yes\n"
+
+if bashio::config.true 'debug'; then
+  logging="${logging}\tdebug: yes\n"
+else
+  logging="${logging}\tdebug: no\n"
+fi
+
+logging="${logging}}"
+
+echo -e "${logging}"
+
+node_list="node_list {"
+while IFS=' ' read -r node_def; do
+  node_id=$(bashio::jq "${node_def}" ".id")
+  node_name=$(bashio::jq "${node_def}" ".name")
+  node_ip=$(bashio::jq "${node_def}" ".ip")
+  if bashio::var.equals "${node_ip}" "null"; then
+    unset node_ip
+  fi
+  node="\tnode {\n"
+  node="${node}\t\tnodeid: ${node_id}\n"
+  node="${node}\t\tname: ${node_name}\n"
+  if bashio::var.defined 'node_ip'; then
+    node="${node}\t\tring0_addr: ${node_ip}\n"
+  fi
+  node="${node}\t}"
+  node_list="${node_list}\t\n${node}\n"
+  echo -e "${node}"
+done <<< "$(bashio::config 'nodes')"
+
+node_list="${node_list}}"
+
+
+echo -e "${totem}\n\n${logging}\n\n${node_list}" > /etc/corosync/corosync.conf

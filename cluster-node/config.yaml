@@ -1,0 +1,73 @@
+---
+name: Cluster Node
+description: Add-on that enables clustering in Hass.io.
+version: 0.0.1
+slug: cluster_node
+description: TODO
+url: https://github.com/teagan42/hassio-cluster
+init: false
+startup: system
+boot: auto
+arch:
+  - aarch64
+  - amd64
+  - armv7
+ports:
+  5403/tcp: 5403
+  5404/udp: 5404
+  5405/udp: 5405
+ports_description:
+  5403/tcp: Corosync-qnetd default host port.
+  5404/udp: Corosync multicast port.
+  5405/udp: Corosync multicast port.
+map:
+  - type: homeassistant_config
+    path: /opt/cluster/homeassistant_config
+  - type: addon_config
+    path: /opt/cluster/addon_config
+  - type: ssl
+    path: /opt/cluster/ssl
+  - type: addons
+    path: /opt/cluster/addons
+  - type: backup
+    path: /opt/cluster/backup
+  - type: share
+    path: /opt/cluster/share
+  - type: media
+    path: /opt/cluster/media
+  - type: all_addon_configs
+    path: /opt/cluster/share
+options:
+  debug: false
+  cluster_name: Home-Assistant
+  sec_auth: false
+  sync:
+    homeassistant_config: true
+    addon_config: true
+    ssl: true
+    addons: true
+    backup: true
+    share: true
+    media: true
+    all_addono_configs: true
+schema:
+  debug: bool
+  cluster_name: str
+  transport: str?
+  rrp_mode: list(none|active|passive)?
+  sec_auth: bool
+  crypto_cipher: list(none|nss|aes256|aes192|aes128)?
+  crypto_hash: list(none|md5|sha1|sha256|sha384|sha512)?
+  nodes:
+    - id: str
+      name: str
+      ip: url?
+  sync:
+    homeassistant_config: bool
+    addon_config: bool
+    ssl: bool
+    addons: bool
+    backup: bool
+    share: bool
+    media: bool
+    all_addono_configs: bool
