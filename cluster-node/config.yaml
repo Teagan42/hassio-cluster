@@ -1,7 +1,7 @@
 ---
 name: Cluster Node
 description: Add-on that enables clustering in Hass.io.
-version: 0.0.2
+version: 0.0.4
 slug: cluster_node
 description: TODO
 url: https://github.com/teagan42/hassio-cluster
@@ -36,7 +36,7 @@ map:
   - type: media
     path: /opt/cluster/media
   - type: all_addon_configs
-    path: /opt/cluster/share
+    path: /opt/cluster/all_addon_configs
 options:
   debug: false
   cluster_name: Home-Assistant
