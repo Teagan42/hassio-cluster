@@ -1,7 +1,7 @@
 ---
 name: Cluster Node
 description: Add-on that enables clustering in Hass.io.
-version: 0.0.5
+version: 0.0.6
 slug: cluster_node
 description: TODO
 url: https://github.com/teagan42/hassio-cluster
