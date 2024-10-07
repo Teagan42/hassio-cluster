@@ -7,7 +7,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install corosync and pacemaker
 RUN apt update && \
-    apt install -y corosync pacemaker pcs ufw
+    apt install -y corosync pacemaker pcs ufw sudo
 
 # Disable any default systemd service files from corosync/pacemaker
 RUN rm -f /etc/init.d/corosync /etc/init.d/pacemaker
