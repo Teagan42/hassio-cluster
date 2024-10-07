@@ -17,12 +17,19 @@ fi
 if bashio::config.has_value 'crypto_cipher' && bashio::config.has_value 'crypto_hash'; then
   if bashio::config.has_value 'transport' && bashio::config.equals 'transport' 'knet'; then
     bashio::log.yellow 'Options [crypto_cipher] and [crypto_hash] require the "knet" [transport], disabling cryptographic authentication.'
+    totem="${totem}\tcrypto_cipher: none\n"
+    totem="${totem}\tcrypto_hash: none\n"
   else
     totem="${totem}\tcrypto_cipher: $(bashio::config 'crypto_cipher')\n"
     totem="${totem}\tcrypto_hash: $(bashio::config 'crypto_hash')\n"
   fi
 elif bashio::config.has_value 'crypto_cipher' || bashio::config.has_value 'crypto_hash'; then
   bashio::log.yellow 'Options [crypto_cipher] and [crypto_hash] must both be set if either are set, disabling cryptographic authentication.'
+  totem="${totem}\tcrypto_cipher: none\n"
+  totem="${totem}\tcrypto_hash: none\n"
+else
+  totem="${totem}\tcrypto_cipher: none\n"
+  totem="${totem}\tcrypto_hash: none\n"
 fi
 
 if bashio::config.has_value 'rrp_mode'; then
