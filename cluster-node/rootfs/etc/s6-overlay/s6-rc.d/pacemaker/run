@@ -9,4 +9,4 @@
 
 bashio::log.info "Starting Pacemaker...."
 
-exec pacemakerd
+exec pacemakerd -f

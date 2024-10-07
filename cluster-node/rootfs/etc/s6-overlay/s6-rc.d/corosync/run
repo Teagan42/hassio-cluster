@@ -11,4 +11,4 @@ bashio::net.wait_for 5403
 
 bashio::log.info "Starting Corosync...."
 
-exec corosync
+exec corosync -f

@@ -31,8 +31,6 @@ fi
 
 totem="${totem}}"
 
-echo -e "${totem}"
-
 logging="logging {\n"
 logging="${logging}\tto_stderr: yes\n"
 logging="${logging}\tto_syslog: yes\n"
@@ -44,8 +42,6 @@ else
 fi
 
 logging="${logging}}"
-
-echo -e "${logging}"
 
 node_list="node_list {"
 while IFS=' ' read -r node_def; do
