@@ -62,7 +62,7 @@ schema:
   nodes:
     - id: str
       name: str
-      ip: url?
+      ip: str?
   sync:
     homeassistant_config: bool
     addon_config: bool
