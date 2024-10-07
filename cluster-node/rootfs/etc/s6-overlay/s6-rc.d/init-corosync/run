@@ -75,3 +75,6 @@ node_list="${node_list}}"
 
 
 echo -e "${totem}\n\n${logging}\n\n${node_list}" > /etc/corosync/corosync.conf
+
+ufw allow 5403/tcp
+ufw allow 5404:5405/udp
